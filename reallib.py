@@ -1,3 +1,9 @@
+''' 
+    Module name     : reallib
+    Python version  : python3 
+    Author          : Debjyoti Bjattacharjee
+    Email           : debjyoti08911@gmail.com
+'''
 import copy
 import sys
 
