@@ -1,8 +1,240 @@
-<html>
- <head>
-  <title>Real lib</title>
- </head>
- <body>
-  <p>A library to manipulate quantum circuits in <a href="http://www.informatik.uni-bremen.de/rev_lib/doc/docu/revlib_2_0.pdf">.real</a> format.</p>
- </body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to Real Library’s documentation! &#8212; Real Library 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="Real Library 0.0 documentation" href="#" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-real-library-s-documentation">
+<h1>Welcome to Real Library&#8217;s documentation!<a class="headerlink" href="#welcome-to-real-library-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-reallib"></span><dl class="docutils">
+<dt>A library to manipulate quantum circuits in .real format.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Platform:</th><td class="field-body">Unix, Windows</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Compatibility:</th><td class="field-body">python3</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Developer:</th><td class="field-body">Debjyoti Bhattacharjee&lt;debjyoti08911 at gmail.com&gt;</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<dl class="class">
+<dt id="reallib.RealLib">
+<em class="property">class </em><code class="descclassname">reallib.</code><code class="descname">RealLib</code><a class="headerlink" href="#reallib.RealLib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>RealLib class has basic functions to parse and visualize quantum circuits 
+(in <a class="reference external" href="http://www.informatik.uni-bremen.de/rev_lib/doc/docu/revlib_2_0.pdf">.real</a> format)</p>
+<dl class="method">
+<dt id="reallib.RealLib.computeDelay">
+<code class="descname">computeDelay</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#reallib.RealLib.computeDelay" title="Permalink to this definition">¶</a></dt>
+<dd><p>The computeDelay function computes the overall delay of the quantum circuit.</p>
+<p>Args: None</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>(int) Returns the overall delay of the quantum circuit</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="reallib.RealLib.countGate">
+<code class="descname">countGate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#reallib.RealLib.countGate" title="Permalink to this definition">¶</a></dt>
+<dd><p>The countGate function returns the number of gates in the quantum circuit.</p>
+<p>Args: None</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>(int) The number of gates in quantum circuit</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="reallib.RealLib.loadReal">
+<code class="descname">loadReal</code><span class="sig-paren">(</span><em>fname</em><span class="sig-paren">)</span><a class="headerlink" href="#reallib.RealLib.loadReal" title="Permalink to this definition">¶</a></dt>
+<dd><p>The loadReal function loads the circuit specified in file fname for manipulation.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>fname (str):  Specify the name of the quantum file in .real format</dt>
+<dd>Example : circuit.real</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Does not return any value</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="reallib.RealLib.writeReal">
+<code class="descname">writeReal</code><span class="sig-paren">(</span><em>out_file</em><span class="sig-paren">)</span><a class="headerlink" href="#reallib.RealLib.writeReal" title="Permalink to this definition">¶</a></dt>
+<dd><p>The writeReal function writes the specified quantum circuit in .real format</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>out_file (str):  Specify the name of the output quantum file in .real format</dt>
+<dd>Example : new_circuit.real</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Does not return any value</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="reallib.RealLib.writeTex">
+<code class="descname">writeTex</code><span class="sig-paren">(</span><em>outfile</em><span class="sig-paren">)</span><a class="headerlink" href="#reallib.RealLib.writeTex" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>The writeTex function writes the specified quantum circuit in .tex format </dt>
+<dd>with .tikz used for representation of the circuit. To generate the circuit, <em>pdflatex</em> is required.</dd>
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>fname (str):  Specify the name of the output quantum file in .tex format</dt>
+<dd>Example : circuit.tex</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Does not return any value</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="reallib.compareReal">
+<code class="descclassname">reallib.</code><code class="descname">compareReal</code><span class="sig-paren">(</span><em>ckt1_fname</em>, <em>ckt2_fname</em>, <em>outputformat='ascii'</em><span class="sig-paren">)</span><a class="headerlink" href="#reallib.compareReal" title="Permalink to this definition">¶</a></dt>
+<dd><p>The compareReal function compares two quatum circuits (in .real format) and prints the 
+summary of both the circuits side-by-side for comparison. Information includes overall delay,
+gate count and number of individual gates of each type.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>ckt1_fname (str):  Circuit 1 file name (.real format)
+ckt2_fname (str):  Circuit 2 file name (.real format)</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>gate_dict (dict)</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Python dictionary with (gate_type,gate_count) as key-value pair.</span><dd>gate_type (str) gate_count (int)</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="reallib.gate_summary">
+<code class="descclassname">reallib.</code><code class="descname">gate_summary</code><span class="sig-paren">(</span><em>ckt</em><span class="sig-paren">)</span><a class="headerlink" href="#reallib.gate_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>The gate_summary function returns a dictionary with <em>(gate_type,number of gate)</em> as key-value pairs.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>ckt (RealLib):  RealLib instance specifying the circuit</dd>
+<dt>Returns:</dt>
+<dd>No return value</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to Real Library&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Debjyoti Bhattacharjee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/index.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
 </html>
