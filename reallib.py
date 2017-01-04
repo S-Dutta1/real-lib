@@ -1,17 +1,24 @@
-''' 
-    Module name     : reallib
-    Python version  : python3 
-    Author          : Debjyoti Bjattacharjee
-    Email           : debjyoti08911@gmail.com
-'''
+""" A library to manipulate quantum circuits in .real format.
+   :Platform: Unix, Windows
+   :Compatibility: python3
+   :Developer: Debjyoti Bhattacharjee<debjyoti08911 at gmail.com>
+   
+.. moduleauthor:: Debjyoti Bhattacharjee <debjyoti08911@gmail.com>
+
+"""
+
+
 import copy
 import sys
 
 class RealLib:
-    ''' the class has basic functions to parse .real files, specifying
-        quantum circuits '''
+    ''' RealLib class has basic functions to parse and visualize quantum circuits 
+    (in `.real
+    <http://www.informatik.uni-bremen.de/rev_lib/doc/docu/revlib_2_0.pdf>`_ format)'''
         
     def __init__(self):
+        """  The function initializes members of the RealLib class to default initial values. 
+        """
         self.fname = None
         self.delay = -1
         self.gate_count = 0
@@ -29,6 +36,16 @@ class RealLib:
         
    
     def loadReal(self,fname):
+        """The loadReal function loads the circuit specified in file fname for manipulation.
+
+    Args:
+        fname (str):  Specify the name of the quantum file in .real format
+            Example : circuit.real
+
+    Returns:
+       Does not return any value
+       
+    """
         self.fname = fname
         
         f = open(self.fname)
@@ -97,9 +114,26 @@ class RealLib:
         f.close()
     
     def countGate(self):
+        """The countGate function returns the number of gates in the quantum circuit.
+
+    Args: None
+        
+
+    Returns:
+       (int) The number of gates in quantum circuit
+       
+    """
         self.gate_count = len(self.circuit)     
         
     def computeDelay(self):
+        """The computeDelay function computes the overall delay of the quantum circuit.
+
+    Args: None
+        
+    Returns:
+        (int) Returns the overall delay of the quantum circuit
+       
+    """
         if self.fname == None:
             print('Error: No real file loaded')
             print('Use the loadReal method to load a real file')
@@ -142,7 +176,18 @@ class RealLib:
             
            
     def writeReal(self,out_file):
-        ''' writes the specified quantum circuit in .real format '''
+        """ The writeReal function writes the specified quantum circuit in .real format 
+   
+
+    Args:
+        out_file (str):  Specify the name of the output quantum file in .real format
+            Example : new_circuit.real
+
+    Returns:
+       Does not return any value
+       
+
+    """
         of = open(out_file,'w')
         
         of.write('# File written by RealLib \n')
@@ -171,7 +216,19 @@ class RealLib:
         of.close()
     
     def writeTex(self,outfile):
-        ''' writes the specified quantum circuit in .tex format '''
+        """ The writeTex function writes the specified quantum circuit in .tex format 
+            with .tikz used for representation of the circuit. To generate the circuit, *pdflatex* is required.
+        
+    Args:
+        fname (str):  Specify the name of the output quantum file in .tex format
+            Example : circuit.tex
+
+    Returns:
+       Does not return any value
+       
+    """    
+        
+        
         header = '\\documentclass[10pt]{article} \n \
 \\usepackage[hang,small,bf]{caption}    % fancy captions\n \
 \\usepackage{tikz}	\n\n\
@@ -253,6 +310,16 @@ class RealLib:
         outf.close()
         
 def gate_summary(ckt):
+    """The gate_summary function returns a dictionary with *(gate_type,number of gate)* as key-value pairs.
+
+    Args:
+        ckt (RealLib):  RealLib instance specifying the circuit
+            
+
+    Returns:
+       No return value
+       
+    """
     gate_dict = dict()
     for gate in ckt.circuit:
         g_type = str(gate[0])+str(gate[1])
@@ -264,6 +331,20 @@ def gate_summary(ckt):
     
 
 def compareReal(ckt1_fname, ckt2_fname,outputformat='ascii'):
+    """The compareReal function compares two quatum circuits (in .real format) and prints the 
+    summary of both the circuits side-by-side for comparison. Information includes overall delay,
+    gate count and number of individual gates of each type.
+
+    Args:
+        ckt1_fname (str):  Circuit 1 file name (.real format)
+        ckt2_fname (str):  Circuit 2 file name (.real format)
+            
+
+    Returns:
+       gate_dict (dict) : Python dictionary with (gate_type,gate_count) as key-value pair.
+                gate_type (str) gate_count (int)
+       
+    """
     ckt1 = RealLib()
     ckt1.loadReal(ckt1_fname)
     ckt1.computeDelay()   
