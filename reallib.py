@@ -1,24 +1,11 @@
-""" A library to manipulate quantum circuits in .real format.
-   :Platform: Unix, Windows
-   :Compatibility: python3
-   :Developer: Debjyoti Bhattacharjee<debjyoti08911 at gmail.com>
-   
-.. moduleauthor:: Debjyoti Bhattacharjee <debjyoti08911@gmail.com>
-
-"""
-
-
 import copy
 import sys
 
 class RealLib:
-    ''' RealLib class has basic functions to parse and visualize quantum circuits 
-    (in `.real
-    <http://www.informatik.uni-bremen.de/rev_lib/doc/docu/revlib_2_0.pdf>`_ format)'''
+    ''' the class has basic functions to parse .real files, specifying
+        quantum circuits '''
         
     def __init__(self):
-        """  The function initializes members of the RealLib class to default initial values. 
-        """
         self.fname = None
         self.delay = -1
         self.gate_count = 0
@@ -29,23 +16,13 @@ class RealLib:
         self.outputs = list()
         self.constants = list()
         self.garbage = list()
-        
+        self.numvar = None
         self.circuit = list()
         # each gate is specified by gateid:
         # gate type, number of inputs, varnames
         
    
     def loadReal(self,fname):
-        """The loadReal function loads the circuit specified in file fname for manipulation.
-
-    Args:
-        fname (str):  Specify the name of the quantum file in .real format
-            Example : circuit.real
-
-    Returns:
-       Does not return any value
-       
-    """
         self.fname = fname
         
         f = open(self.fname)
@@ -114,26 +91,9 @@ class RealLib:
         f.close()
     
     def countGate(self):
-        """The countGate function returns the number of gates in the quantum circuit.
-
-    Args: None
-        
-
-    Returns:
-       (int) The number of gates in quantum circuit
-       
-    """
         self.gate_count = len(self.circuit)     
         
     def computeDelay(self):
-        """The computeDelay function computes the overall delay of the quantum circuit.
-
-    Args: None
-        
-    Returns:
-        (int) Returns the overall delay of the quantum circuit
-       
-    """
         if self.fname == None:
             print('Error: No real file loaded')
             print('Use the loadReal method to load a real file')
@@ -176,18 +136,7 @@ class RealLib:
             
            
     def writeReal(self,out_file):
-        """ The writeReal function writes the specified quantum circuit in .real format 
-   
-
-    Args:
-        out_file (str):  Specify the name of the output quantum file in .real format
-            Example : new_circuit.real
-
-    Returns:
-       Does not return any value
-       
-
-    """
+        ''' writes the specified quantum circuit in .real format '''
         of = open(out_file,'w')
         
         of.write('# File written by RealLib \n')
@@ -202,9 +151,9 @@ class RealLib:
         of.write('.inputs '+ (" ".join(self.inputs))+'\n')
         of.write('.outputs '+ (" ".join(self.outputs))+'\n')
         if self.constants != list():
-            of.write('.constants '+ (" ".join(self.constants))+'\n')
+            of.write('.constants '+ ("".join(self.constants))+'\n')
         if self.garbage != list():
-            of.write('.garbage '+ (" ".join(self.garbage))+'\n')
+            of.write('.garbage '+ ("".join(self.garbage))+'\n')
         
         
         of.write('.begin\n')
@@ -215,21 +164,14 @@ class RealLib:
             
         of.close()
     
-    def writeTex(self,outfile):
-        """ The writeTex function writes the specified quantum circuit in .tex format 
-            with .tikz used for representation of the circuit. To generate the circuit, *pdflatex* is required.
-        
-    Args:
-        fname (str):  Specify the name of the output quantum file in .tex format
-            Example : circuit.tex
-
-    Returns:
-       Does not return any value
-       
-    """    
-        
-        
-        header = '\\documentclass[10pt]{article} \n \
+    def writeTex(self,outfile,framed = False):
+        ''' writes the specified quantum circuit in .tex format '''
+        if framed:
+            frame = "framed,background rectangle/.style={double,ultra thick,draw,rounded corners},thick"
+        else:
+            frame = ''
+        header = '\\documentclass{standalone} \n \
+        \\usepackage{graphicx} \n \
 \\usepackage[hang,small,bf]{caption}    % fancy captions\n \
 \\usepackage{tikz}	\n\n\
 % TikZ libraries \n\
@@ -238,19 +180,19 @@ class RealLib:
 \\usetikzlibrary{shapes,arrows,fit,calc,positioning,automata} \n\
 \\newcommand{\\ket}[1]{\\ensuremath{\\left|#1\\right\\rangle}} % Dirac Kets \n\
 \\begin{document} \n\
-    \\begin{figure} \n\
-    \\centerline{ \n\
-        \\begin{tikzpicture}[framed,background rectangle/.style={double,ultra thick,draw,rounded corners},thick] \n\
+    %\\begin{figure} \n\
+    %\\centerline{ \n\
+        \\begin{tikzpicture}['+frame+'] \n\
             \\tikzset{oplus/.style={path picture={% \n\
             \\draw[black] \n\
             (path picture bounding box.south) -- (path picture bounding box.north) \n\
             (path picture bounding box.west) -- (path picture bounding box.east);\n\
             }}}\n\
              \\tikzstyle{operator} = [draw,fill=white,minimum size=1.5em] \n\
-             \\tikzstyle{phase} = [fill,shape=circle,minimum size=5pt,inner sep=0pt]\n\
+             \\tikzstyle{phase} = [fill,shape=circle,minimum size=4pt,inner sep=0pt]\n\
              \\tikzstyle{surround} = [fill=blue!10,thick,draw=black,rounded corners=2mm]\n\
              \\tikzstyle{swap} = [draw,fill,shape=cross out,minimum size=5pt,inner sep=0pt]\n\
-             \\tikzstyle{cnot} = [oplus,draw,thick,circle]'
+             \\tikzstyle{cnot} = [oplus,draw,thick,circle,minimum size = 12pt]'
         
         prefix = '\t\t'           
         outf = open(outfile,'w')
@@ -259,13 +201,17 @@ class RealLib:
         col = 0
         pos_dict = dict()
         last_point_dict = dict()
+        sep = -0.5 # qubit line separatation
+        
         for i in range(len(self.variables)):
             last_point_dict[i] = '(q'+str(col)+'_'+str(i)+')'
-            outf.write(prefix+'\\node at ('+str(col)+','+str(i*-1)+')' + last_point_dict[i]+' {\\ket{'+str(self.variables[i])+'}};\n')  
+            outf.write(prefix+'\\node at ('+str(col)+','+str(i*sep)+')' + last_point_dict[i]+' {\\ket{'+str(self.variables[i])+'}};\n')  
             pos_dict[self.variables[i]] = i
-        
+        gate_sep = 0.5 # gate separation
+        col_pos = 0.5
         for gate in self.circuit:
             col = col + 1
+            col_pos = col_pos + gate_sep
             print(gate)
             outf.write(prefix+'% Gate '+str(col)+'\n')
             lines_active = list()
@@ -274,7 +220,7 @@ class RealLib:
                 print(i,len(gate[2:])-1)
                 new_point = '(q'+str(col)+'_'+str(pos_dict[var])+')'
                 lines_active.append(pos_dict[var])
-                loc = '('+str(col)+','+str(-1*pos_dict[var])+')'
+                loc = '('+str(col_pos)+','+str(sep*pos_dict[var])+')'
                 if gate[0] == 'f' and i >= len(gate[2:])-2:
                     outf.write(prefix+'\\node[swap] '+ new_point+' at '+loc+ ' {} edge [-] '+ last_point_dict[pos_dict[var]]+';\n')
                 elif i == len(gate[2:])-1 :
@@ -297,29 +243,20 @@ class RealLib:
                
         outf.write(prefix+'% Output\n')
         col = col + 1
+        col_pos = col_pos + 2*gate_sep
         for i in range(len(self.outputs)):     
             out_var = '(q'+str(col)+'_'+str(i)+')'
-            outf.write(prefix+'\\node at ('+str(col)+','+str(i*-1)+')' + out_var+' {\\ket{'+str(self.outputs[i])+'}};\n')   
+            outf.write(prefix+'\\node at ('+str(col_pos)+','+str(i*sep)+')' + out_var+' {\\ket{'+str(self.outputs[i])+'}};\n')   
             source =  last_point_dict[i] 
             outf.write(prefix+'\\draw[-] '+source+'  -- '+out_var+';\n')
         footer = '\t\t\\end{tikzpicture} \n \
-  }\n\
-\\end{figure}\n\
+  %}\n\
+%\\end{figure}\n\
 \end{document}\n'
         outf.write(footer)
         outf.close()
         
 def gate_summary(ckt):
-    """The gate_summary function returns a dictionary with *(gate_type,number of gate)* as key-value pairs.
-
-    Args:
-        ckt (RealLib):  RealLib instance specifying the circuit
-            
-
-    Returns:
-       No return value
-       
-    """
     gate_dict = dict()
     for gate in ckt.circuit:
         g_type = str(gate[0])+str(gate[1])
@@ -331,20 +268,6 @@ def gate_summary(ckt):
     
 
 def compareReal(ckt1_fname, ckt2_fname,outputformat='ascii'):
-    """The compareReal function compares two quatum circuits (in .real format) and prints the 
-    summary of both the circuits side-by-side for comparison. Information includes overall delay,
-    gate count and number of individual gates of each type.
-
-    Args:
-        ckt1_fname (str):  Circuit 1 file name (.real format)
-        ckt2_fname (str):  Circuit 2 file name (.real format)
-            
-
-    Returns:
-       gate_dict (dict) : Python dictionary with (gate_type,gate_count) as key-value pair.
-                gate_type (str) gate_count (int)
-       
-    """
     ckt1 = RealLib()
     ckt1.loadReal(ckt1_fname)
     ckt1.computeDelay()   
