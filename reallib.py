@@ -31,7 +31,7 @@ class RealLib:
             if line.find('#') > 0:
                 line = line[:line.find('#')]
             # comment line
-            if line == '':
+            if line == '' or line == '\n':
                 continue
             #line = line[:-1]
             w = line.split()
@@ -247,7 +247,7 @@ class RealLib:
         for i in range(len(self.outputs)):     
             out_var = '(q'+str(col)+'_'+str(i)+')'
             outf.write(prefix+'\\node at ('+str(col_pos)+','+str(i*sep)+')' + out_var+' {\\ket{'+str(self.outputs[i])+'}};\n')   
-            source =  last_point_dict[i] 
+            source =  '(q0_'+str(i)+')' 
             outf.write(prefix+'\\draw[-] '+source+'  -- '+out_var+';\n')
         footer = '\t\t\\end{tikzpicture} \n \
   %}\n\
