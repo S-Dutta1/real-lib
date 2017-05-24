@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.5.17)  24 MAY 2017 16:23
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.5.17)  24 MAY 2017 18:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**or53.tex
-(./or53.tex
+**ob.tex
+(./ob.tex
 LaTeX2e <2011/06/27>
 Babel <3.9h> and hyphenation patterns for 78 languages loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/standalone/standalone.cls
@@ -472,8 +472,8 @@ File: tikzlibrarypositioning.code.tex 2008/10/06 v2.10 (rcs-revision 1.7)
 ata.code.tex
 File: tikzlibraryautomata.code.tex 2008/07/14 v2.10 (rcs-revision 1.3)
 )
-No file or53.aux.
-\openout1 = `or53.aux'.
+No file ob.aux.
+\openout1 = `ob.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
 LaTeX Font Info:    ... okay on input line 11.
@@ -549,20 +549,20 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 25.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./or53.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./ob.aux) ) 
 Here is how much of TeX's memory you used:
- 14190 strings out of 493304
- 298638 string characters out of 6139871
- 372277 words of memory out of 5000000
- 17369 multiletter control sequences out of 15000+600000
+ 14858 strings out of 493304
+ 308834 string characters out of 6139871
+ 482464 words of memory out of 5000000
+ 18037 multiletter control sequences out of 15000+600000
  3640 words of font info for 14 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 56i,7n,92p,394b,640s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/
-texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texliv
-e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf
--dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on or53.pdf (1 page, 27453 bytes).
+ 56i,7n,92p,392b,640s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on ob.pdf (1 page, 38532 bytes).
 PDF statistics:
  23 PDF objects out of 1000 (max. 8388607)
  16 compressed objects within 1 object stream

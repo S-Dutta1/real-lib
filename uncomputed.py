@@ -162,7 +162,7 @@ class RealLib:
 
         #copying inputs
         #no. of outputs excluding garbage = len(self.garbage[0]) - no_garb
-        of.write("#copying inputs\n")
+        #of.write("#copying inputs\n")
         no_orig_var = self.numvar - len(self.garbage[0]) + no_garb
         k = 0
         for i in range(no_orig_var):
@@ -172,7 +172,7 @@ class RealLib:
                 k = k+1
 
         #in reverse order
-        of.write("#in reverse order\n")
+        #of.write("#in reverse order\n")
         for idx,x in enumerate(reversed(self.eckt)):
             self.circuit.append([x[0][0],x[0][1:]]+x[1:]) # append to the circuit for delay computation
             of.write(" ".join(x)+"\n")

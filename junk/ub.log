@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.5.17)  24 MAY 2017 16:23
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2017.5.17)  24 MAY 2017 18:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -551,10 +551,10 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./ub.aux) ) 
 Here is how much of TeX's memory you used:
- 15244 strings out of 493304
- 314702 string characters out of 6139871
- 551092 words of memory out of 5000000
- 18423 multiletter control sequences out of 15000+600000
+ 15732 strings out of 493304
+ 322202 string characters out of 6139871
+ 634441 words of memory out of 5000000
+ 18911 multiletter control sequences out of 15000+600000
  3640 words of font info for 14 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  56i,7n,92p,392b,640s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -562,7 +562,7 @@ Here is how much of TeX's memory you used:
 xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-d
 ist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on ub.pdf (1 page, 44886 bytes).
+Output written on ub.pdf (1 page, 53412 bytes).
 PDF statistics:
  23 PDF objects out of 1000 (max. 8388607)
  16 compressed objects within 1 object stream
