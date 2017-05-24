@@ -82,49 +82,90 @@ class RealLib:
             # Process the preamble of the .real file
             if w[0] == '.numvars':
                 self.numvar = int(w[1])
-                of.write(line)
             elif w[0] == '.version':
                 self.version = w[1]
                 of.write(line)
             elif w[0] == '.variables':
                 self.variables = w[1:]
-                of.write(line)
             elif w[0] == '.inputs':
                 self.inputs = w[1:]
-                of.write(line)
             elif w[0] == '.outputs':
                 self.outputs = w[1:]
-                of.write(line)
             elif w[0] == '.constants':
                 self.constants = list(w[1:])
-                of.write(line)
             elif w[0] == '.garbage':
                 self.garbage = list(w[1:])
-                of.write(line)
             elif w[0] == '.begin':
                 is_gate_line = True
-                of.write(line)  
 
 
 
         print("ckt")    
         print(self.circuit)
+        print(self.numvar)
         print(self.eckt)
         print(self.garbage)
         print(self.variables)
         print(self.inputs)
         print(self.outputs)
-        #print(self.garbage[0][0])   
-        for x in self.eckt:
-            of.write(" ".join(x))
-            of.write("\n")
+        print(self.constants)
+        no_garb = 0
+        for val in self.garbage[0]:
+            if val == '1':
+                no_garb = no_garb + 1
+       
 
-        for x in reversed(self.eckt):
-            tar = x[-1]
-            ind = int(tar[1:])
-            if self.garbage[0][ind] == '1':
-                of.write(" ".join(x))
-                of.write("\n")
+        #numvars        
+        of.write(".numvars ")
+        self.numvar = int(self.numvar)+len(self.garbage[0]) - no_garb
+        print(self.numvar)
+        of.write(str(self.numvar)+"\n")
+
+        #variables
+        of.write(".variables")
+        for i in range(self.numvar):
+            of.write(" x"+str(i))
+        of.write("\n")
+
+        #inputs
+        of.write(".inputs")
+        for i in self.inputs:
+            of.write(" "+i)
+        for i in range(len(self.garbage[0]) - no_garb):
+            of.write(" e"+str(i+1))
+        of.write("\n")
+
+        #outputs
+        of.write(".outputs")
+        for i in range(self.numvar - len(self.garbage[0]) + no_garb):
+            of.write(" ui"+str(i))
+        for i in range(len(self.garbage[0]) - no_garb):
+            of.write(" o"+str(i+1))
+
+        #constants
+        of.write("\n.constants ")
+        of.write(self.constants[0])
+        for i in range(len(self.garbage[0]) - no_garb):
+            of.write("0")
+
+        #garbage
+        of.write("\n.garbage ")
+        for i in range(self.numvar):
+            of.write("-")
+
+        of.write("\n.begin\n")
+
+
+        # temp_eckt = list(reversed(self.eckt))
+        # for idx,x in enumerate(reversed(self.eckt)):
+        #     tar = x[-1] #eg t15
+        #     ind = int(tar[1:]) #extract 15
+        #     if self.garbage[0][ind] == '1':
+        #         of.write(" ".join(x))
+        #         of.write("\n")
+        #         self.gate_count = self.gate_count + 1 #increase gate count
+        #         self.circuit.append(self.circuit[len(self.circuit) - idx - 1]) # append to the circuit for delay computation
+
 
         of.write(".end\n")
         of.close();
@@ -175,35 +216,6 @@ class RealLib:
         #print(self.compute)
         
             
-           
-    def writeReal(self,out_file):
-        ''' writes the specified quantum circuit in .real format '''
-        of = open(out_file,'w')
-        
-        of.write('# File written by RealLib \n')
-        of.write('# Gates: '+str(self.gate_count)+'\n')
-        if self.delay != -1:
-            of.write('# Delay: '+str(self.delay)+'\n')
-        
-        of.write('.version '+self.version+'\n')
-        of.write('.numvars '+str(self.numvar)+'\n')
-        of.write('.variables '+(" ".join(self.variables))+'\n')
-        
-        of.write('.inputs '+ (" ".join(self.inputs))+'\n')
-        of.write('.outputs '+ (" ".join(self.outputs))+'\n')
-        if self.constants != list():
-            of.write('.constants '+ ("".join(self.constants))+'\n')
-        if self.garbage != list():
-            of.write('.garbage '+ ("".join(self.garbage))+'\n')
-        
-        
-        of.write('.begin\n')
-        for gate in self.circuit:
-            #print(gate)
-            of.write(str(gate[0])+str(gate[1])+' '+(' '.join(gate[2:]))+'\n') 
-        of.write('.end\n')   
-            
-        of.close()
     
         
 def gate_summary(ckt):
@@ -217,40 +229,7 @@ def gate_summary(ckt):
     return gate_dict
     
 
-def compareReal(ckt1_fname, ckt2_fname,outputformat='ascii'):
-    ckt1 = RealLib()
-    ckt1.loadReal(ckt1_fname)
-    ckt1.computeDelay()   
-    
-    ckt2 = RealLib()
-    ckt2.loadReal(ckt2_fname)
-    ckt2.computeDelay()   
-    
-    #print summary of each circuit 
-    # compare delay, #gates, #types of gates
-    ckt1_gates = gate_summary(ckt1)
-    ckt2_gates = gate_summary(ckt2)
-                      
-    gate_type = list(set(ckt1_gates.keys()) | set(ckt2_gates.keys()))
-    gate_type.sort()
-    
-    print('Circuit 1: '+ckt1.fname)
-    print('Circuit 2: '+ckt2.fname)
-    print('Delay    :'+ repr(ckt1.delay).rjust(5)+' | '+repr(ckt2.delay).rjust(5))
-    print('Gate     :'+ repr(ckt1.gate_count).rjust(5)+' | '+repr(ckt2.gate_count).rjust(5))
-    
-    for g in gate_type:
-        if g in ckt1_gates.keys():
-            c1 = ckt1_gates[g]
-        else:
-            c1 = 0
-            
-        if g in ckt2_gates.keys():
-            c2 = ckt2_gates[g]
-        else:
-            c2 = 0    
-        print('%9s:%5d | %5d'% (g,c1,c2))
-    
+
 if __name__=='__main__':
     if len(sys.argv) < 3:
         print('python3 RealLib inputfile outputfile')
@@ -258,6 +237,5 @@ if __name__=='__main__':
     ckt = RealLib()
     ckt.loadReal(sys.argv[1],sys.argv[2])
     ckt.computeDelay()
-    #ckt.writeTex(sys.argv[2])
-    #compareReal(sys.argv[1],sys.argv[2])
+    
     
