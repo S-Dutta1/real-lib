@@ -1,5 +1,6 @@
 import copy
 import sys
+from array import array
 
 class RealLib:
     ''' the class has basic functions to parse .real files, specifying
@@ -7,6 +8,7 @@ class RealLib:
         
     def __init__(self):
         self.fname = None
+        self.outfile = None
         self.delay = -1
         self.gate_count = 0
         self.quantum_cost = 0 # clarify 
@@ -18,12 +20,17 @@ class RealLib:
         self.garbage = list()
         self.numvar = None
         self.circuit = list()
+        self.eckt = list() # a copy for easy processing
         # each gate is specified by gateid:
         # gate type, number of inputs, varnames
         
    
-    def loadReal(self,fname):
+    def loadReal(self,fname, outfile):
         self.fname = fname
+        self.outfile = outfile
+        of = open(outfile,'w')
+        
+        of.write('# File written by RealLib \n')
         
         f = open(self.fname)
         is_gate_line = False
@@ -66,29 +73,51 @@ class RealLib:
                 
                 self.gate_count = self.gate_count + 1
                 self.circuit.append([g_type,len(w[1:])]+w[1:])
+                self.eckt.append(w)
                 
             #if len(self.circuit) > 0:   
             #    print(line)
-            #print("kkkkkK")    
-            #print(self.circuit)
+            
 
             # Process the preamble of the .real file
             if w[0] == '.numvars':
                 self.numvar = int(w[1])
+                of.write(line)
             elif w[0] == '.version':
                 self.version = w[1]
+                of.write(line)
             elif w[0] == '.variables':
                 self.variables = w[1:]
+                of.write(line)
             elif w[0] == '.inputs':
                 self.inputs = w[1:]
+                of.write(line)
             elif w[0] == '.outputs':
                 self.outputs = w[1:]
+                of.write(line)
             elif w[0] == '.constants':
                 self.constants = list(w[1:])
+                of.write(line)
             elif w[0] == '.garbage':
                 self.garbage = list(w[1:])
+                of.write(line)
             elif w[0] == '.begin':
-                is_gate_line = True    
+                is_gate_line = True
+                of.write(line)  
+
+
+
+        print("ckt")    
+        print(self.circuit)
+        print(self.eckt)
+        print(self.garbage)
+        print(self.variables)
+        print(self.inputs)
+        print(self.outputs)
+        #print(self.garbage[0][0])   
+        for x in self.eckt:
+            of.write(" ".join(x))
+            of.write("\n")
         f.close()
     
     def countGate(self):
@@ -165,97 +194,6 @@ class RealLib:
             
         of.close()
     
-    def writeTex(self,outfile,framed = False):
-        ''' writes the specified quantum circuit in .tex format '''
-        if framed:
-            frame = "framed,background rectangle/.style={double,ultra thick,draw,rounded corners},thick"
-        else:
-            frame = ''
-        header = '\\documentclass{standalone} \n \
-        \\usepackage{graphicx} \n \
-\\usepackage[hang,small,bf]{caption}    % fancy captions\n \
-\\usepackage{tikz}	\n\n\
-% TikZ libraries \n\
-\\usetikzlibrary{shapes,snakes} \n\
-\\usetikzlibrary{backgrounds,fit,decorations.pathreplacing} \n \
-\\usetikzlibrary{shapes,arrows,fit,calc,positioning,automata} \n\
-\\newcommand{\\ket}[1]{\\ensuremath{\\left|#1\\right\\rangle}} % Dirac Kets \n\
-\\begin{document} \n\
-    %\\begin{figure} \n\
-    %\\centerline{ \n\
-        \\begin{tikzpicture}['+frame+'] \n\
-            \\tikzset{oplus/.style={path picture={% \n\
-            \\draw[black] \n\
-            (path picture bounding box.south) -- (path picture bounding box.north) \n\
-            (path picture bounding box.west) -- (path picture bounding box.east);\n\
-            }}}\n\
-             \\tikzstyle{operator} = [draw,fill=white,minimum size=1.5em] \n\
-             \\tikzstyle{phase} = [fill,shape=circle,minimum size=4pt,inner sep=0pt]\n\
-             \\tikzstyle{surround} = [fill=blue!10,thick,draw=black,rounded corners=2mm]\n\
-             \\tikzstyle{swap} = [draw,fill,shape=cross out,minimum size=5pt,inner sep=0pt]\n\
-             \\tikzstyle{cnot} = [oplus,draw,thick,circle,minimum size = 12pt]'
-        
-        prefix = '\t\t'           
-        outf = open(outfile,'w')
-        outf.write(header)
-        outf.write(prefix+'% Qubit\n')
-        col = 0
-        pos_dict = dict()
-        last_point_dict = dict()
-        sep = -0.5 # qubit line separatation
-        
-        for i in range(len(self.variables)):
-            last_point_dict[i] = '(q'+str(col)+'_'+str(i)+')'
-            outf.write(prefix+'\\node at ('+str(col)+','+str(i*sep)+')' + last_point_dict[i]+' {\\ket{'+str(self.variables[i])+'}};\n')  
-            pos_dict[self.variables[i]] = i
-        gate_sep = 0.5 # gate separation
-        col_pos = 0.5
-        for gate in self.circuit:
-            col = col + 1
-            col_pos = col_pos + gate_sep
-            print(gate)
-            outf.write(prefix+'% Gate '+str(col)+'\n')
-            lines_active = list()
-            for i in range(len(gate[2:])):
-                var = gate[i+2]
-                print(i,len(gate[2:])-1)
-                new_point = '(q'+str(col)+'_'+str(pos_dict[var])+')'
-                lines_active.append(pos_dict[var])
-                loc = '('+str(col_pos)+','+str(sep*pos_dict[var])+')'
-                if gate[0] == 'f' and i >= len(gate[2:])-2:
-                    outf.write(prefix+'\\node[swap] '+ new_point+' at '+loc+ ' {} edge [-] '+ last_point_dict[pos_dict[var]]+';\n')
-                elif i == len(gate[2:])-1 :
-                    if gate[0] == 't':
-                        outf.write(prefix+'\\node[cnot] '+ new_point+' at '+loc+ ' {} edge [-] '+ last_point_dict[pos_dict[var]]+';\n')
-                    elif gate[0] == 'v':
-                        outf.write(prefix+'\\node[operator] '+ new_point+' at '+loc+ ' {V} edge [-] '+ last_point_dict[pos_dict[var]]+';\n')
-                    elif gate[0] == 'v+':
-                        outf.write(prefix+'\\node[operator] '+ new_point+' at '+loc+ ' {V+} edge [-] '+ last_point_dict[pos_dict[var]]+';\n')
-                else:
-                    outf.write(prefix+'\\node[phase] '+ new_point+' at '+loc+ ' {} edge [-] '+ last_point_dict[pos_dict[var]]+';\n')
-                last_point_dict[pos_dict[var]] = new_point
-            
-            lines_active.sort()
-            for i in range(len(lines_active)-1):
-                source = '(q'+str(col)+'_'+str(lines_active[i])+')'
-                dest   = '(q'+str(col)+'_'+str(lines_active[i+1])+')'
-                outf.write(prefix+'\\draw[-] '+source+'  -- '+dest+';\n')
-                
-               
-        outf.write(prefix+'% Output\n')
-        col = col + 1
-        col_pos = col_pos + 2*gate_sep
-        for i in range(len(self.outputs)):     
-            out_var = '(q'+str(col)+'_'+str(i)+')'
-            outf.write(prefix+'\\node at ('+str(col_pos)+','+str(i*sep)+')' + out_var+' {\\ket{'+str(self.outputs[i])+'}};\n')   
-            source =  '(q0_'+str(i)+')' 
-            outf.write(prefix+'\\draw[-] '+source+'  -- '+out_var+';\n')
-        footer = '\t\t\\end{tikzpicture} \n \
-  %}\n\
-%\\end{figure}\n\
-\end{document}\n'
-        outf.write(footer)
-        outf.close()
         
 def gate_summary(ckt):
     gate_dict = dict()
@@ -307,8 +245,8 @@ if __name__=='__main__':
         print('python3 RealLib inputfile outputfile')
         sys.exit(0)
     ckt = RealLib()
-    ckt.loadReal(sys.argv[1])
+    ckt.loadReal(sys.argv[1],sys.argv[2])
     ckt.computeDelay()
-    ckt.writeTex(sys.argv[2])
+    #ckt.writeTex(sys.argv[2])
     #compareReal(sys.argv[1],sys.argv[2])
     
