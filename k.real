@@ -1,13 +1,83 @@
 # File written by RealLib 
 .version 2.0
-.numvars 10
-.variables x0 x1 x2 x3 x4 x5 x6 x7 x8 x9
-.inputs i0 i1 i2 i3 i4 i5 i6 i7 i8 i9
-.outputs o0 o1 o2 o3 o4 o5 o6 o7 o8 o9
-.constants -----00000
-.garbage 11111-----
+.numvars 8
+.variables x0 x1 x2 x3 x4 x5 x6 x7
+.inputs 0 0 0 x1 x2 x3 x4 x5
+.outputs y1 y2 y3 y4 y5 - - -
+.constants 000-----
+.garbage -----111
 .begin
-t2 x4 x8
+t5 x3 x5 x6 x7 x2
+t4 x5 x6 x7 x2
+t4 x2 x5 x6 x7
+t4 x3 x6 x7 x2
 t2 x3 x7
-t4 x2 x3 x4 x6
+t2 x3 x6
+t2 x2 x3
+t2 x3 x7
+t2 x3 x6
+t4 x3 x5 x7 x2
+t4 x2 x3 x5 x7
+t3 x3 x7 x4
+t2 x3 x6
+t2 x3 x4
+t3 x5 x7 x3
+t2 x3 x6
+t2 x3 x4
+t2 x2 x3
+t3 x6 x7 x2
+t2 x2 x3
+t2 x6 x7
+t3 x2 x3 x6
+t2 x6 x7
 t2 x2 x6
+t2 x2 x5
+t3 x4 x7 x2
+t2 x2 x6
+t2 x2 x5
+t2 x4 x7
+t4 x2 x5 x6 x4
+t2 x4 x7
+t2 x2 x6
+t2 x2 x5
+t2 x2 x3
+t2 x7 x2
+t2 x2 x6
+t2 x2 x5
+t2 x2 x3
+t5 x2 x3 x5 x6 x7
+t2 x6 x2
+t2 x2 x6
+t2 x5 x1
+t2 x1 x5
+t2 x3 x6
+t2 x6 x3
+t2 x4 x5
+t2 x5 x4
+t2 x4 x5
+t2 x3 x6
+t2 x1 x5
+t2 x2 x6
+t5 x2 x3 x5 x6 x7
+t2 x2 x5
+t2 x2 x6
+t2 x2 x5
+t2 x2 x6
+t2 x4 x7
+t2 x4 x7
+t2 x2 x5
+t2 x2 x6
+t2 x2 x5
+t2 x2 x6
+t2 x6 x7
+t3 x2 x3 x6
+t2 x6 x7
+t2 x3 x6
+t2 x3 x6
+t4 x2 x3 x5 x7
+t2 x3 x6
+t2 x3 x7
+t2 x3 x6
+t2 x3 x7
+t4 x2 x5 x6 x7
+.end

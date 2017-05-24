@@ -118,6 +118,17 @@ class RealLib:
         for x in self.eckt:
             of.write(" ".join(x))
             of.write("\n")
+
+        for x in reversed(self.eckt):
+            tar = x[-1]
+            ind = int(tar[1:])
+            if self.garbage[0][ind] == '1':
+                of.write(" ".join(x))
+                of.write("\n")
+
+        of.write(".end\n")
+        of.close();
+
         f.close()
     
     def countGate(self):
