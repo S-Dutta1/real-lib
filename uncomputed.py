@@ -149,27 +149,38 @@ class RealLib:
             of.write("0")
 
         #garbage
+        #self.garbage still has original garbage list
         of.write("\n.garbage ")
         for i in range(self.numvar):
             of.write("-")
 
         of.write("\n.begin\n")
 
+        #original ckt
+        for i in self.eckt:
+            of.write(" ".join(i)+"\n")
 
-        # temp_eckt = list(reversed(self.eckt))
-        # for idx,x in enumerate(reversed(self.eckt)):
-        #     tar = x[-1] #eg t15
-        #     ind = int(tar[1:]) #extract 15
-        #     if self.garbage[0][ind] == '1':
-        #         of.write(" ".join(x))
-        #         of.write("\n")
-        #         self.gate_count = self.gate_count + 1 #increase gate count
-        #         self.circuit.append(self.circuit[len(self.circuit) - idx - 1]) # append to the circuit for delay computation
+        #copying inputs
+        #no. of outputs excluding garbage = len(self.garbage[0]) - no_garb
+        of.write("#copying inputs\n")
+        no_orig_var = self.numvar - len(self.garbage[0]) + no_garb
+        k = 0
+        for i in range(no_orig_var):
+            if self.garbage[0][i] == '-':
+                of.write("t2 "+self.variables[i]+" x"+str(no_orig_var+k)+"\n")
+                self.circuit.append(['t',2,self.variables[i],"x"+str(no_orig_var+k)])
+                k = k+1
+
+        #in reverse order
+        of.write("#in reverse order\n")
+        for idx,x in enumerate(reversed(self.eckt)):
+            self.circuit.append([x[0][0],x[0][1:]]+x[1:]) # append to the circuit for delay computation
+            of.write(" ".join(x)+"\n")
 
 
         of.write(".end\n")
         of.close();
-
+        print(self.circuit)
         f.close()
     
     def countGate(self):
